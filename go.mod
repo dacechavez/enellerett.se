@@ -1,3 +1,3 @@
-module enellerett.se
+module enellerett
 
 go 1.23.4
