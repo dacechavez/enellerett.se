@@ -79,7 +79,7 @@ func TestGETSwedishCharacters(t *testing.T) {
 		handler(response, request)
 
 		got := response.Body.String()
-		want := "Handled Swedish characters"
+		want := "öäå"
 
 		if !strings.Contains(got, want) {
 			t.Errorf("got: [%q]\nit did not contain: [%q]", got, want)
@@ -92,13 +92,13 @@ func TestGETSwedishCharacters(t *testing.T) {
 func TestPOSTRequest(t *testing.T) {
 	t.Run("handles POST request", func(t *testing.T) {
 		body := strings.NewReader("name=test")
-		request, _ := http.NewRequest(http.MethodPost, "/submit", body)
+		request, _ := http.NewRequest(http.MethodPost, "/stol", body)
 		response := httptest.NewRecorder()
 
 		handler(response, request)
 
 		got := response.Body.String()
-		want := "POST received"
+		want := "En stol"
 
 		if !strings.Contains(got, want) {
 			t.Errorf("got: [%q]\nit did not contain: [%q]", got, want)
@@ -111,13 +111,13 @@ func TestPOSTRequest(t *testing.T) {
 func TestPUTRequest(t *testing.T) {
 	t.Run("handles PUT request", func(t *testing.T) {
 		body := strings.NewReader("update=data")
-		request, _ := http.NewRequest(http.MethodPut, "/update", body)
+		request, _ := http.NewRequest(http.MethodPut, "/stol", body)
 		response := httptest.NewRecorder()
 
 		handler(response, request)
 
 		got := response.Body.String()
-		want := "PUT received"
+		want := "En stol"
 
 		if !strings.Contains(got, want) {
 			t.Errorf("got: [%q]\nit did not contain: [%q]", got, want)
@@ -129,13 +129,13 @@ func TestPUTRequest(t *testing.T) {
 
 func TestWeirdQueryParams(t *testing.T) {
 	t.Run("handles weird query params", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodGet, "/?q=☃️&z=😈", nil)
+		request, _ := http.NewRequest(http.MethodGet, "/stol?q=☃️&z=😈", nil)
 		response := httptest.NewRecorder()
 
 		handler(response, request)
 
 		got := response.Body.String()
-		want := "Weird params handled"
+		want := "En stol"
 
 		if !strings.Contains(got, want) {
 			t.Errorf("got: [%q]\nit did not contain: [%q]", got, want)
@@ -161,7 +161,7 @@ func TestPathTraversal(t *testing.T) {
 				handler(response, request)
 
 				got := response.Body.String()
-				want := "Path traversal blocked"
+				want := "Kunde inte hitta"
 
 				if !strings.Contains(got, want) {
 					t.Errorf("got: [%q]\nit did not contain: [%q]", got, want)

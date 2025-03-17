@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swedish Noun Game</title>
+    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+    <style>
+        body {
+		font-family: Arial, sans-serif; text-align: center; 
+		background-color: #101010;
+  		color: #ffffff;
+	}
+        #response-list div { margin: 5px; padding: 5px; background: #f0f0f0; }
+	input[type=button] { padding: 10px; margin: 5px; font-size: 16px; }
+	h1 {
+	  color: #ffffff;
+	}
+	nav a {
+	  color: #ffffff;
+	}
+	footer {
+	  color: #ffffff;
+	}
+    </style>
+</head>
+<body>
+
+    <h1>enellerett.se</h1>
+    <input name="s" type="text" placeholder="Sök genus för ett substantiv"
+        hx-get="/s"
+        hx-trigger="keyup changed delay:500ms"
+        hx-target="#response-list"
+        hx-swap="innerHTML">
+
+    <div id="response-list"></div>
+
+    <hr>
+
+    <h2>Spela - är det en eller ett?</h2>
+    <div id="game">
+	<!-- Random noun -->
+        <div id="randomized" hx-get="/game/random" hx-trigger="load, newRandom from:body">
+
+	</div>
+
+	<!-- En button -->
+        <input type="button" placeholder="enz" value="en"
+            hx-get="/game/check/en"
+            hx-target="#game-result"
+            hx-vals='js:{randomNoun: document.getElementById("randomized").innerText}'
+            hx-swap="afterend">
+
+	<!-- Ett button -->
+        <input type="button" placeholder="ett" value="ett"
+            hx-get="/game/check/ett"
+            hx-vals='js:{randomNoun: document.getElementById("randomized").innerText}'
+            hx-target="#game-result"
+            hx-swap="afterend">
+
+                <!--
+        <button hx-get="/game/check/en" hx-target="#game-result">en</button>
+        <button hx-get="/game/check/ett" hx-target="#game-result">ett</button>
+-->
+        <div id="game-result">
+
+        </div>
+
+    </div>
+
+</body>
+</html>
+
