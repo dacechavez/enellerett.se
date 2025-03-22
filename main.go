@@ -146,21 +146,24 @@ func handleBrowser(w http.ResponseWriter, r *http.Request) {
         tmpl.Execute(w, nil)
     } else {
         s := r.FormValue("s")
-        fmt.Printf("s: %s\n", s)
+        fmt.Printf("s: [%s]\n", s)
         res := lookup(s)
         fmt.Fprintf(w, res)
     }
 }
 
 func lookup(word string) string {
-    info, exists := table.Read(word)
+    clean := strings.ReplaceAll(word, " ", "")
+    clean = strings.ToLower(clean)
+
+    info, exists := table.Read(clean)
 
     if !exists {
         return fmt.Sprintf("Kunde inte hitta substantivet '%s'\n", word)
     }
    
     go func() {
-        table.IncrementHits(word)
+        table.IncrementHits(clean)
     }()
 
     return info.msg
