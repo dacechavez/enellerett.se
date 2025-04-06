@@ -156,6 +156,11 @@ func lookup(word string) string {
     clean := strings.ReplaceAll(word, " ", "")
     clean = strings.ToLower(clean)
 
+    if len(clean) == 0 {
+        return ""
+    }
+
+
     info, exists := table.Read(clean)
 
     if !exists {
@@ -185,7 +190,8 @@ func handleCurl(w http.ResponseWriter, r *http.Request) {
 
 func handler(w http.ResponseWriter, r *http.Request) {
     logging(r)
-    //payload := lookup(r.Path)
+
+
     isBrowser := isBrowser(r.UserAgent())
 
     if isBrowser {
